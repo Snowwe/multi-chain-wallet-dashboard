@@ -25,21 +25,13 @@
           </thead>
 
           <tbody>
-            @for (token of tokens(); track token.symbol) {
+            @for (token of tokens(); track token.address ?? token.symbol) {
               <tr>
                 <td>
-                  <div class="token-table__symbol">
-                    {{ token.symbol }}
-                  </div>
+                  <div class="token-table__symbol">{{ token.symbol }}</div>
                 </td>
-
-                <td class="text-end">
-                  {{ formatBalance(token) }}
-                </td>
-
-                <td class="text-end">
-                  {{ formatTokenUsdValue(token) }}
-                </td>
+                <td class="text-end">{{ formatBalance(token) }}</td>
+                <td class="text-end">{{ formatTokenUsdValue(token) }}</td>
               </tr>
             }
           </tbody>

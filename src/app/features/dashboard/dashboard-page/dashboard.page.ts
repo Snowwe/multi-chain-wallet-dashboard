@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
+  OnInit,
   inject,
   signal,
-  OnInit,
-  DestroyRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { finalize, forkJoin } from 'rxjs';
@@ -54,7 +54,6 @@ export class DashboardPage implements OnInit {
   readonly error = signal<string | null>(null);
 
   readonly hasData = computed(() => !!this.portfolio());
-  readonly hasTransactions = computed(() => this.transactions().length > 0);
 
   ngOnInit(): void {
     this.loadChains();
@@ -77,7 +76,8 @@ export class DashboardPage implements OnInit {
           this.portfolio.set(portfolio);
           this.transactions.set(transactions);
         },
-        error: () => {
+        error: (error) => {
+          console.error('Wallet loading error:', error);
           this.portfolio.set(null);
           this.transactions.set([]);
           this.error.set(
@@ -94,14 +94,19 @@ export class DashboardPage implements OnInit {
     this.chainService
       .getChains()
       .pipe(
-        finalize(() => this.loadingChains.set(false)),
+        finalize(() => {
+          console.log('Chains finalize');
+          this.loadingChains.set(false);
+        }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
         next: (chains) => {
+          console.log('Loaded chains:', chains);
           this.chains.set(chains);
         },
-        error: () => {
+        error: (error) => {
+          console.error('Failed to load chains:', error);
           this.error.set('Failed to load blockchain networks.');
         },
       });
