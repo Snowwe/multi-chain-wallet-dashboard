@@ -18,7 +18,7 @@
           <option value="" disabled>Select network</option>
 
           @for (chain of chains(); track chain.id) {
-            <option [value]="chain.id">{{ chain.name }} ({{ chain.nativeSymbol }})</option>
+            <option [value]="chain.id">{{ chain.name }} ({{ chain.nativeCurrency.symbol }})</option>
           }
         </select>
 

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
 import { TransactionItem } from '@models/transaction.model';
-import { formatTokenBalance, shortenMiddle } from '@utils/balance.util';
+import { shortenMiddle } from '@utils/balance.util';
 
 @Component({
   selector: 'app-transaction-list',
@@ -20,8 +20,6 @@ export class TransactionListComponent {
   }
 
   formatAmount(transaction: TransactionItem): string {
-    return `${formatTokenBalance(transaction.rawBalance, transaction.decimals)} ${
-      transaction.symbol
-    }`;
+    return `${transaction.value} ${transaction.symbol}`;
   }
 }

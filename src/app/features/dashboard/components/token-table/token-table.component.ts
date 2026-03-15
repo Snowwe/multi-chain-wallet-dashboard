@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TokenBalance } from '@models/portfolio.model';
-import { calculateUsdValue, formatTokenBalance, formatUsd } from '@utils/balance.util';
+import { formatTokenBalance, formatUsd } from '@utils/balance.util';
 
 @Component({
   selector: 'app-token-table',
@@ -20,6 +20,6 @@ export class TokenTableComponent {
   }
 
   formatTokenUsdValue(token: TokenBalance): string {
-    return formatUsd(calculateUsdValue(token.rawBalance, token.decimals, token.usdPrice));
+    return formatUsd(token.usdValue);
   }
 }

@@ -2,8 +2,8 @@ export interface TransactionItem {
   hash: string;
   from: string;
   to: string;
-  rawBalance: string;
-  decimals: number;
+  value: string;
   symbol: string;
-  timestamp: string;
+  timestamp: number;
+  status: string;
 }

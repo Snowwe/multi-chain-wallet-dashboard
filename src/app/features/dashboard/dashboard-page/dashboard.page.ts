@@ -66,7 +66,7 @@ export class DashboardPage implements OnInit {
 
     forkJoin({
       portfolio: this.portfolioService.getPortfolio(payload.chain.id, payload.address),
-      transactions: this.transactionService.getTransactions(payload.address),
+      transactions: this.transactionService.getTransactions(payload.address, payload.chain.id),
     })
       .pipe(
         finalize(() => this.loadingWallet.set(false)),

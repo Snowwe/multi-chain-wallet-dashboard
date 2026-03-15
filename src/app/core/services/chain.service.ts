@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, shareReplay } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Chain } from '../models/chain.model';
+import { Chain } from '@models/chain.model';
 
 @Injectable({
   providedIn: 'root',

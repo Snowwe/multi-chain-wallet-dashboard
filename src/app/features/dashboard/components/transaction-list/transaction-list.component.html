@@ -52,7 +52,7 @@
                 </td>
 
                 <td class="text-end">
-                  {{ transaction.timestamp | date: 'MMM d, y, HH:mm' }}
+                  {{ transaction.timestamp * 1000 | date: 'MMM d, y, HH:mm' }}
                 </td>
               </tr>
             }

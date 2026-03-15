@@ -1,15 +1,16 @@
-export interface AssetBalance {
+export interface TokenBalance {
   symbol: string;
+  balance: string;
   rawBalance: string;
   decimals: number;
-  usdPrice: number;
+  usdValue: number;
+  address?: string;
 }
 
-export interface TokenBalance extends AssetBalance {}
-
 export interface PortfolioResponse {
-  chain: string;
   address: string;
-  nativeBalance: AssetBalance;
+  chain: string;
+  nativeBalance: TokenBalance;
   tokens: TokenBalance[];
+  totalUsdValue: number;
 }
