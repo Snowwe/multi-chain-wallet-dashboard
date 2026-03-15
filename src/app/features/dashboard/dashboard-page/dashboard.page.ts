@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { finalize, forkJoin } from 'rxjs';
+import { Subscription, finalize, forkJoin, interval, startWith, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { Chain } from '@models/chain.model';
@@ -45,6 +45,9 @@ export class DashboardPage implements OnInit {
   private readonly portfolioService = inject(PortfolioService);
   private readonly transactionService = inject(TransactionService);
 
+  private refreshSub: Subscription | null = null;
+  private readonly refreshMs = 60_000;
+
   readonly chains = signal<Chain[]>([]);
   readonly portfolio = signal<PortfolioResponse | null>(null);
   readonly transactions = signal<TransactionItem[]>([]);
@@ -60,15 +63,24 @@ export class DashboardPage implements OnInit {
   }
 
   onSearch(payload: { chain: Chain; address: string }): void {
-    this.loadingWallet.set(true);
-    this.error.set(null);
+    this.refreshSub?.unsubscribe();
 
-    forkJoin({
-      portfolio: this.portfolioService.getPortfolio(payload.chain.id, payload.address),
-      transactions: this.transactionService.getTransactions(payload.address, payload.chain.id),
-    })
+    this.refreshSub = interval(this.refreshMs)
       .pipe(
-        finalize(() => this.loadingWallet.set(false)),
+        startWith(0),
+        tap(() => {
+          this.loadingWallet.set(true);
+          this.error.set(null);
+        }),
+        switchMap(() =>
+          forkJoin({
+            portfolio: this.portfolioService.getPortfolio(payload.chain.id, payload.address),
+            transactions: this.transactionService.getTransactions(
+              payload.address,
+              payload.chain.id
+            ),
+          }).pipe(finalize(() => this.loadingWallet.set(false)))
+        ),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
@@ -94,15 +106,11 @@ export class DashboardPage implements OnInit {
     this.chainService
       .getChains()
       .pipe(
-        finalize(() => {
-          console.log('Chains finalize');
-          this.loadingChains.set(false);
-        }),
+        finalize(() => this.loadingChains.set(false)),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
         next: (chains) => {
-          console.log('Loaded chains:', chains);
           this.chains.set(chains);
         },
         error: (error) => {
