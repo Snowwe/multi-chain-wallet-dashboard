@@ -1,6 +1,45 @@
-<div class="card border-0 shadow-sm">
-  <div class="card-body">
-    <h2 class="h5 mb-2">Portfolio summary</h2>
-    <p class="text-secondary mb-0">Summary component placeholder.</p>
+<div class="row g-3">
+  <div class="col-12 col-md-4">
+    <article class="card portfolio-summary__card border-0 shadow-sm h-100">
+      <div class="card-body p-4">
+        <div class="portfolio-summary__label">Native balance</div>
+
+        <div class="portfolio-summary__value mt-2">
+          {{ nativeBalanceFormatted() }} {{ portfolio().nativeBalance.symbol }}
+        </div>
+
+        <div class="portfolio-summary__subvalue mt-2">
+          {{ nativeUsdFormatted() }}
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <article class="card portfolio-summary__card border-0 shadow-sm h-100">
+      <div class="card-body p-4">
+        <div class="portfolio-summary__label">Portfolio total</div>
+
+        <div class="portfolio-summary__value mt-2">
+          {{ totalUsdFormatted() }}
+        </div>
+
+        <div class="portfolio-summary__subvalue mt-2">Native asset + token holdings</div>
+      </div>
+    </article>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <article class="card portfolio-summary__card border-0 shadow-sm h-100">
+      <div class="card-body p-4">
+        <div class="portfolio-summary__label">Wallet</div>
+
+        <div class="portfolio-summary__address mt-2">
+          {{ portfolio().address }}
+        </div>
+
+        <div class="portfolio-summary__subvalue mt-2">Network: {{ portfolio().chain }}</div>
+      </div>
+    </article>
   </div>
 </div>

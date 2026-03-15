@@ -1,3 +1,36 @@
 :host {
   display: block;
 }
+
+.portfolio-summary {
+  &__card {
+    border-radius: 1rem;
+  }
+
+  &__label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6c757d;
+  }
+
+  &__value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #212529;
+    word-break: break-word;
+  }
+
+  &__subvalue {
+    font-size: 0.95rem;
+    color: #6c757d;
+  }
+
+  &__address {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #212529;
+    word-break: break-all;
+  }
+}
