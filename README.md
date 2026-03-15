@@ -1,52 +1,282 @@
-# MultiChainWalletDashboard
+# Multi-Chain Wallet Dashboard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.2.
+Angular application that allows users to explore wallet balances, token
+holdings and recent transactions across multiple blockchains.
 
-## Development server
+The dashboard supports **Ethereum (EVM)** and **Solana** wallets and
+provides a clear overview of:
 
-To start a local development server, run:
+- native balance
+- token portfolio
+- recent transactions
 
-```bash
-ng serve
-```
+This project was implemented as a **frontend test assignment**
+demonstrating modern Angular architecture, strong typing and reactive
+data handling.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+------------------------------------------------------------------------
 
-## Code scaffolding
+# Tech Stack
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Angular 21
+- TypeScript (strict mode)
+- RxJS
+- Angular Signals
+- Bootstrap 5
+- Standalone Components
+- Jest (unit testing)
 
-```bash
-ng generate component component-name
-```
+------------------------------------------------------------------------
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+# Features
 
-```bash
-ng generate --help
-```
+## Wallet dashboard
 
-## Building
+- Select blockchain network
+- Enter wallet address
+- Fetch portfolio data
+- Display:
+- native balance
+- portfolio total value
+- token balances
+- recent transactions
 
-To build the project run:
+------------------------------------------------------------------------
 
-```bash
-ng build
-```
+# Supported networks
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Ethereum (EVM)
+- Solana
 
-## Linting and formatting are configured using ESLint and Prettier.
-Run:
+------------------------------------------------------------------------
 
+# Wallet validation
 
-```bash
-npm run lint
-npm run format
-```
+Validation depends on the selected network.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## EVM wallets
 
-## Additional Resources
+Wallet must:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- start with `0x`
+- contain **42 characters**
+
+Example:
+
+    0xdAC17F958D2ee523a2206206994597C13D831ec7
+
+## Solana wallets
+
+Wallet must be:
+
+- base58 encoded
+- length **32--44 characters**
+
+Validation errors appear on **blur and submit**.
+
+------------------------------------------------------------------------
+
+# Portfolio overview
+
+The dashboard displays:
+
+## Native balance
+
+Example:
+
+    12.847231 ETH
+    $44,892.35
+
+------------------------------------------------------------------------
+
+## Portfolio total
+
+    $49,969.92
+    Native asset + token holdings
+
+------------------------------------------------------------------------
+
+## Token balances
+
+Example:
+
+Symbol Balance USD Value
+  -------- ------------ -----------
+USDT 1250 \$1250
+USDC 842.15 \$842.15
+LINK 154.782145 \$2985.42
+
+------------------------------------------------------------------------
+
+# Recent transactions
+
+Displays latest wallet activity.
+
+Example:
+
+  -----------------------------------------------------------------------------
+Hash From To Amount Date
+  --------------- --------------- --------------- -------------- --------------
+0x8f1c...c3d4 0xdAC1...1ec7 0x742d...f44e 0.54 ETH Mar 9, 2024
+
+  -----------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+# Responsive design
+
+The interface adapts to screen size.
+
+Desktop: - full tables - detailed transaction view
+
+Mobile: - optimized card layouts for tokens and transactions - avoids
+horizontal scrolling
+
+------------------------------------------------------------------------
+
+# Mock mode
+
+The application supports **mock mode** for local development and demo.
+
+Enable mock mode in:
+
+`src/environments/environment.ts`
+
+    export const environment = {
+      production: false,
+      useMockApi: true
+    };
+
+When enabled, services return **local mock data instead of backend
+requests**.
+
+Mock data includes: - chains - portfolio - tokens - transactions
+
+------------------------------------------------------------------------
+
+# Backend note
+
+The backend provided with the assignment was unstable during local
+testing. To ensure the UI could still be demonstrated fully, **mock mode
+was introduced**.
+
+Switch back to the real backend by setting:
+
+    useMockApi: false
+
+------------------------------------------------------------------------
+
+# Project structure
+
+    src/app
+    │
+    ├── core
+    │   ├── models
+    │   ├── services
+    │   ├── utils
+    │   └── mocks
+    │
+    ├── features
+    │   └── dashboard
+    │        ├── components
+    │        │    ├── wallet-form
+    │        │    ├── portfolio-summary
+    │        │    ├── token-table
+    │        │    └── transaction-list
+    │        │
+    │        └── dashboard.page.ts
+
+------------------------------------------------------------------------
+
+# Technical decisions
+
+Standalone components are used to simplify Angular architecture.
+
+Signals manage: - loading state - error state - portfolio data -
+transactions
+
+RxJS operators used: - forkJoin - switchMap - shareReplay - finalize -
+takeUntilDestroyed
+
+Example:
+
+    forkJoin({
+      portfolio,
+      transactions
+    })
+
+------------------------------------------------------------------------
+
+# Unit tests
+
+Example tested utility:
+
+    formatTokenBalance
+
+Run tests:
+
+    npm run test:unit
+
+------------------------------------------------------------------------
+
+# Run the project
+
+Install dependencies:
+
+    npm install
+
+Start development server:
+
+    npm start
+
+Open:
+
+    http://localhost:4200
+
+------------------------------------------------------------------------
+
+# Scripts
+
+Command Description
+  ------------------- --------------------------
+npm start start development server
+npm run build build production version
+npm run lint run ESLint
+npm run format run Prettier
+npm run test:unit run unit tests
+
+------------------------------------------------------------------------
+
+# Reviewer notes
+
+1. Run the project with mock mode enabled.
+2. No API keys are required.
+3. Mock mode demonstrates the full UI flow even if backend APIs are
+   unavailable.
+
+------------------------------------------------------------------------
+
+# Possible improvements
+
+- skeleton loaders
+- retry button for failed requests
+- token sorting
+- transaction pagination
+- blockchain explorer links
+- additional networks
+
+------------------------------------------------------------------------
+
+# Final notes
+
+The purpose of this project is to demonstrate:
+
+- Angular architecture
+- TypeScript best practices
+- RxJS usage
+- responsive UI
+- component-based structure
+- handling unstable backend APIs using mock mode
+
+The application can easily switch between **mock data and real backend
+APIs** without changing the UI layer.
