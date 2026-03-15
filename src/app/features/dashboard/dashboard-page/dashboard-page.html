@@ -1,1 +1,70 @@
-<p>dashboard-page works!</p>
+<main class="dashboard-page py-4 py-md-5">
+  <div class="container">
+    <header class="page-header mb-4 mb-md-5">
+      <div class="d-flex flex-column gap-2">
+        <span class="page-header__eyebrow">Multi-Chain Wallet Dashboard</span>
+        <h1 class="page-header__title mb-0">Track wallet balances across networks</h1>
+        <p class="page-header__subtitle mb-0">
+          View native assets, token holdings, and recent transactions for EVM and Solana wallets.
+        </p>
+      </div>
+    </header>
+
+    @if (error()) {
+      <section class="mb-4">
+        <div class="alert alert-danger mb-0" role="alert">
+          {{ error() }}
+        </div>
+      </section>
+    }
+
+    <section class="mb-4 mb-md-5">
+      <app-wallet-form
+        [chains]="chains()"
+        [loading]="loadingWallet()"
+        (search)="onSearch($event)"
+      />
+    </section>
+
+    @if (loadingChains()) {
+      <section class="card dashboard-card border-0 shadow-sm">
+        <div class="card-body py-5 text-center">
+          <div class="spinner-border" role="status" aria-hidden="true"></div>
+          <p class="text-secondary mt-3 mb-0">Loading blockchain networks...</p>
+        </div>
+      </section>
+    }
+
+    @if (!loadingChains() && loadingWallet()) {
+      <section class="d-grid gap-4">
+        <div class="card dashboard-card border-0 shadow-sm">
+          <div class="card-body py-5 text-center">
+            <div class="spinner-border" role="status" aria-hidden="true"></div>
+            <p class="text-secondary mt-3 mb-0">Loading wallet data...</p>
+          </div>
+        </div>
+      </section>
+    }
+
+    @if (!loadingWallet() && hasData()) {
+      <div class="d-grid gap-4">
+        <app-portfolio-summary [portfolio]="portfolio()!"/>
+        <app-token-table [tokens]="portfolio()!.tokens"/>
+        <app-transaction-list [transactions]="transactions()"/>
+      </div>
+    }
+
+    @if (!loadingChains() && !loadingWallet() && !hasData() && !error()) {
+      <section class="card dashboard-card border-0 shadow-sm empty-state">
+        <div class="card-body p-4 p-md-5 text-center">
+          <div class="empty-state__icon mb-3">₿</div>
+          <h2 class="h4 mb-2">Enter a wallet address to get started</h2>
+          <p class="text-secondary mb-0">
+            Select a network, paste a wallet address, and view its portfolio and transaction history.
+          </p>
+        </div>
+      </section>
+    }
+  </div>
+</main>
+
