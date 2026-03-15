@@ -1,6 +1,92 @@
-<div class="card border-0 shadow-sm">
-  <div class="card-body">
-    <h2 class="h5 mb-2">Wallet form</h2>
-    <p class="text-secondary mb-0">Form component will be implemented next.</p>
+<form
+  class="wallet-form card border-0 shadow-sm"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  novalidate
+>
+  <div class="card-body p-3 p-md-4">
+    <div class="row g-3 align-items-start">
+      <div class="col-12 col-lg-4">
+        <label for="chainId" class="form-label">Network</label>
+
+        <select
+          id="chainId"
+          class="form-select"
+          formControlName="chainId"
+          [class.is-invalid]="chainIdControl.touched && chainIdControl.invalid"
+        >
+          <option value="" disabled>Select network</option>
+
+          @for (chain of chains(); track chain.id) {
+            <option [value]="chain.id">{{ chain.name }} ({{ chain.nativeSymbol }})</option>
+          }
+        </select>
+
+        <div class="wallet-form__message">
+          @if (chainIdControl.touched && chainIdControl.hasError('required')) {
+            <div class="invalid-feedback d-block">Please select a blockchain network.</div>
+          } @else {
+            <div class="wallet-form__message-placeholder"></div>
+          }
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <label for="address" class="form-label">Wallet address</label>
+
+        <input
+          id="address"
+          type="text"
+          class="form-control"
+          formControlName="address"
+          [placeholder]="addressPlaceholder()"
+          [class.is-invalid]="addressControl.touched && addressControl.invalid"
+        />
+
+        <div class="wallet-form__message">
+          <div class="wallet-form__hint">
+            @if (selectedChain(); as chain) {
+              @if (chain.type === 'evm') {
+                EVM address should start with <strong>0x</strong> and contain 42 characters.
+              } @else {
+                Solana address should be a valid base58 string with 32–44 characters.
+              }
+            } @else {
+              Select a network to see address format requirements.
+            }
+          </div>
+
+          @if (addressControl.touched && addressControl.hasError('required')) {
+            <div class="invalid-feedback d-block">Please enter a wallet address.</div>
+          } @else if (addressControl.touched && addressControl.hasError('invalidWalletAddress')) {
+            <div class="invalid-feedback d-block">
+              Invalid wallet address format for the selected network.
+            </div>
+          } @else {
+            <div class="wallet-form__message-placeholder"></div>
+          }
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-2">
+        <div class="wallet-form__actions">
+          <button
+            type="submit"
+            class="btn btn-primary w-100 wallet-form__submit"
+            [disabled]="loading()"
+          >
+            @if (loading()) {
+              <span
+                class="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            }
+
+            Show balance
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</form>

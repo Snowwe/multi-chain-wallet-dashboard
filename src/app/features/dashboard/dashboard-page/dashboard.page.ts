@@ -34,11 +34,11 @@ import { TransactionListComponent } from '@dashboard/components/transaction-list
     TokenTableComponent,
     TransactionListComponent,
   ],
-  templateUrl: './dashboard-page.html',
-  styleUrl: './dashboard-page.scss',
+  templateUrl: './dashboard.page.html',
+  styleUrl: './dashboard.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardPageComponent implements OnInit {
+export class DashboardPage implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   private readonly chainService = inject(ChainService);
