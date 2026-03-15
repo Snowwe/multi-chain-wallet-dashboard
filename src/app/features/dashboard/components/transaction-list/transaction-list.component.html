@@ -14,50 +14,92 @@
     @if (transactions().length === 0) {
       <div class="transaction-list__empty text-secondary">No recent transactions found.</div>
     } @else {
-      <div class="table-responsive">
-        <table class="table transaction-list__table align-middle mb-0">
-          <thead>
-          <tr>
-            <th scope="col">Hash</th>
-            <th scope="col">From</th>
-            <th scope="col">To</th>
-            <th scope="col" class="text-end">Amount</th>
-            <th scope="col" class="text-end">Date</th>
-          </tr>
-          </thead>
+      <div class="d-none d-md-block">
+        <div class="table-responsive">
+          <table class="table transaction-list__table align-middle mb-0">
+            <thead>
+            <tr>
+              <th scope="col">Hash</th>
+              <th scope="col">From</th>
+              <th scope="col">To</th>
+              <th scope="col" class="text-end">Amount</th>
+              <th scope="col" class="text-end">Date</th>
+            </tr>
+            </thead>
 
-          <tbody>
-            @for (transaction of transactions(); track transaction.hash) {
-              <tr>
-                <td>
-                  <span class="transaction-list__mono" [title]="transaction.hash">
-                    {{ shorten(transaction.hash) }}
-                  </span>
-                </td>
+            <tbody>
+              @for (transaction of transactions(); track transaction.hash) {
+                <tr>
+                  <td>
+                    <span class="transaction-list__mono" [title]="transaction.hash">
+                      {{ shorten(transaction.hash) }}
+                    </span>
+                  </td>
 
-                <td>
-                  <span class="transaction-list__mono" [title]="transaction.from">
-                    {{ shorten(transaction.from) }}
-                  </span>
-                </td>
+                  <td>
+                    <span class="transaction-list__mono" [title]="transaction.from">
+                      {{ shorten(transaction.from) }}
+                    </span>
+                  </td>
 
-                <td>
-                  <span class="transaction-list__mono" [title]="transaction.to">
-                    {{ shorten(transaction.to) }}
-                  </span>
-                </td>
+                  <td>
+                    <span class="transaction-list__mono" [title]="transaction.to">
+                      {{ shorten(transaction.to) }}
+                    </span>
+                  </td>
 
-                <td class="text-end">
+                  <td class="text-end">
+                    {{ formatAmount(transaction) }}
+                  </td>
+
+                  <td class="text-end">
+                    {{ transaction.timestamp * 1000 | date: 'MMM d, y, HH:mm' }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="d-md-none">
+        <div class="transaction-list__mobile-list">
+          @for (transaction of transactions(); track transaction.hash) {
+            <article class="transaction-list__mobile-card">
+              <div class="transaction-list__mobile-row">
+                <span class="transaction-list__mobile-label">Hash</span>
+                <span class="transaction-list__mobile-value transaction-list__mono">
+                  {{ shorten(transaction.hash) }}
+                </span>
+              </div>
+
+              <div class="transaction-list__mobile-row">
+                <span class="transaction-list__mobile-label">From</span>
+                <span class="transaction-list__mobile-value transaction-list__mono">
+                  {{ shorten(transaction.from) }}
+                </span>
+              </div>
+
+              <div class="transaction-list__mobile-row">
+                <span class="transaction-list__mobile-label">To</span> <span class="transaction-list__mobile-value transaction-list__mono">
+                  {{ shorten(transaction.to) }}
+                </span>
+              </div>
+
+              <div class="transaction-list__mobile-row">
+                <span class="transaction-list__mobile-label">Amount</span> <span class="transaction-list__mobile-value">
                   {{ formatAmount(transaction) }}
-                </td>
+                </span>
+              </div>
 
-                <td class="text-end">
+              <div class="transaction-list__mobile-row">
+                <span class="transaction-list__mobile-label">Date</span> <span class="transaction-list__mobile-value">
                   {{ transaction.timestamp * 1000 | date: 'MMM d, y, HH:mm' }}
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
+                </span>
+              </div>
+            </article>
+          }
+        </div>
       </div>
     }
   </div>

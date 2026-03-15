@@ -14,28 +14,56 @@
     @if (tokens().length === 0) {
       <div class="token-table__empty text-secondary">No tokens found for this wallet.</div>
     } @else {
-      <div class="table-responsive">
-        <table class="table token-table__table align-middle mb-0">
-          <thead>
-          <tr>
-            <th scope="col">Symbol</th>
-            <th scope="col" class="text-end">Balance</th>
-            <th scope="col" class="text-end">USD Value</th>
-          </tr>
-          </thead>
+      <div class="d-none d-md-block">
+        <div class="table-responsive">
+          <table class="table token-table__table align-middle mb-0">
+            <thead>
+            <tr>
+              <th scope="col">Symbol</th>
+              <th scope="col" class="text-end">Balance</th>
+              <th scope="col" class="text-end">USD Value</th>
+            </tr>
+            </thead>
 
-          <tbody>
-            @for (token of tokens(); track token.address ?? token.symbol) {
-              <tr>
-                <td>
-                  <div class="token-table__symbol">{{ token.symbol }}</div>
-                </td>
-                <td class="text-end">{{ formatBalance(token) }}</td>
-                <td class="text-end">{{ formatTokenUsdValue(token) }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
+            <tbody>
+              @for (token of tokens(); track token.address ?? token.symbol) {
+                <tr>
+                  <td>
+                    <div class="token-table__symbol">{{ token.symbol }}</div>
+                  </td>
+                  <td class="text-end">{{ formatBalance(token) }}</td>
+                  <td class="text-end">{{ formatTokenUsdValue(token) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="d-md-none">
+        <div class="token-table__mobile-list">
+          @for (token of tokens(); track token.address ?? token.symbol) {
+            <article class="token-table__mobile-card">
+              <div class="token-table__mobile-row">
+                <span class="token-table__mobile-label">Symbol</span> <span class="token-table__mobile-value token-table__symbol">
+                  {{ token.symbol }}
+                </span>
+              </div>
+
+              <div class="token-table__mobile-row">
+                <span class="token-table__mobile-label">Balance</span> <span class="token-table__mobile-value">
+                  {{ formatBalance(token) }}
+                </span>
+              </div>
+
+              <div class="token-table__mobile-row">
+                <span class="token-table__mobile-label">USD Value</span> <span class="token-table__mobile-value">
+                  {{ formatTokenUsdValue(token) }}
+                </span>
+              </div>
+            </article>
+          }
+        </div>
       </div>
     }
   </div>
